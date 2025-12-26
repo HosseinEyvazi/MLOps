@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Price Predictor</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .result { margin-top: 20px; padding: 15px; background-color: #e2e3e5; border-radius: 5px; text-align: center; }
+        .error { color: red; background-color: #f8d7da; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>🏡 California House Price Prediction</h1>
+
+    <!-- 
+        Form Method="get" means data is sent as Query Params.
+        Action="/predict" sends data to our FastAPI endpoint.
+    -->
+    <form action="/predict" method="get">
+        
+        <div class="form-group">
+            <label for="med_inc">Median Income (in $10k):</label>
+            <!-- value="{{ med_inc }}" keeps the input filled after prediction -->
+            <input type="number" step="0.01" name="med_inc" required value="{{ med_inc }}">
+        </div>
+
+        <div class="form-group">
+            <label for="house_age">House Age (Years):</label>
+            <input type="number" step="1" name="house_age" required value="{{ house_age }}">
+        </div>
+
+        <div class="form-group">
+            <label for="ave_rooms">Average Rooms:</label>
+            <input type="number" step="0.1" name="ave_rooms" required value="{{ ave_rooms }}">
+        </div>
+
+        <button type="submit">Predict Price</button>
+    </form>
+
+    <!-- Jinja2 Logic: Display Result if it exists -->
+    {% if prediction_text %}
+    <div class="result">
+        <h2>Estimated Price: {{ prediction_text }}</h2>
+    </div>
+    {% endif %}
+
+    <!-- Jinja2 Logic: Display Error if it exists -->
+    {% if error_message %}
+    <div class="result error">
+        <strong>Error:</strong> {{ error_message }}
+    </div>
+    {% endif %}
+
+</body>
+</html>
